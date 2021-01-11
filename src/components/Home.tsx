@@ -74,6 +74,7 @@ const Home: FC = (): JSX.Element => {
 
   const onLoadMore = async () => {
     setLoading(true)
+    handleScrollToBottom()
     setList(images.data.concat([...new Array(pageSize)].map(() => ({ loading: true, title: '' } as Image))))
     setCurrentPage(currentPage + 1)
     const res = await getData(currentPage + 1, pageSize)
@@ -82,6 +83,7 @@ const Home: FC = (): JSX.Element => {
     setList(data)
     setLoading(false)
   }
+  const endImageRef = React.useRef<HTMLDivElement>()
 
   const loadMore =
     !initLoading && !loading && currentPage !== images.meta.totalPage ? (
@@ -97,6 +99,17 @@ const Home: FC = (): JSX.Element => {
       </div>
     ) : null
 
+  const handleScrollToBottom = () => {
+    setTimeout(
+      () =>
+        endImageRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        }),
+      500
+    )
+  }
+
   return (
     <Layout className={classes['container']}>
       <div>
@@ -105,11 +118,21 @@ const Home: FC = (): JSX.Element => {
         <section style={{ marginTop: '2rem' }}>
           {initLoading && <Spin size="large" />}
           <Row gutter={[16, 24]} justify="center">
-            {list.map((item, index) => (
-              <Col key={index} xs={20} sm={16} md={12} lg={8} xl={6}>
-                <CardImage {...item} />
-              </Col>
-            ))}
+            {list.map((item, index) => {
+              return (
+                <Col
+                  ref={index === list.length - 1 ? (endImageRef as React.RefObject<HTMLDivElement>) : null}
+                  key={index}
+                  xs={20}
+                  sm={16}
+                  md={12}
+                  lg={8}
+                  xl={6}
+                >
+                  <CardImage {...item} />
+                </Col>
+              )
+            })}
           </Row>
           {loadMore}
         </section>
