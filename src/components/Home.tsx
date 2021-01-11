@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useState } from 'react'
-import axios from 'axios'
-import { Layout, Typography, Row, Col, Input, Button, Spin } from 'antd'
+import React, { FC, useEffect, useState } from "react"
+import axios from "axios"
+import { Layout, Typography, Row, Col, Input, Button, Spin } from "antd"
 
-import useDebounce from 'hooks/useDebounce'
-import CardImage from './Card'
-import classes from './Home.module.css'
+import { getImages } from "services/api"
+import useDebounce from "hooks/useDebounce"
+import CardImage from "./Card"
+import classes from "./Home.module.css"
 
 const { Title } = Typography
 
@@ -22,7 +23,7 @@ interface ResponseImages {
 const Home: FC = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(4)
-  const [tags, setTags] = useState<string>('')
+  const [tags, setTags] = useState<string>("")
   const [initLoading, setInitLoading] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
   const [images, setImages] = useState<ResponseImages>({} as ResponseImages)
@@ -31,7 +32,7 @@ const Home: FC = (): JSX.Element => {
   const debouncedTags = useDebounce(tags, 500)
 
   useEffect(() => {
-    getData(currentPage, pageSize)
+    getImages(currentPage, pageSize, tags)
       .then((res) => {
         setImages(res)
         setList(res.data)
@@ -48,14 +49,14 @@ const Home: FC = (): JSX.Element => {
       setCurrentPage(1)
       setInitLoading(true)
       setList([])
-      getData(currentPage, pageSize, debouncedTags).then((res) => {
+      getImages(currentPage, pageSize, debouncedTags).then((res) => {
         setInitLoading(false)
         setImages(res)
         setList(res.data)
       })
     } else {
       setInitLoading(true)
-      getData(currentPage, pageSize, tags).then((res) => {
+      getImages(currentPage, pageSize, tags).then((res) => {
         setInitLoading(false)
         setImages(res)
         setList(res.data)
@@ -63,21 +64,18 @@ const Home: FC = (): JSX.Element => {
     }
   }, [debouncedTags])
 
-  const getData = async (currentPage, pageSize, keyword = tags) => {
-    const res = await axios(
-      `${process.env.REACT_APP_API_URL}/images?currentPage=${currentPage}&pageSize=${pageSize}&tags=${
-        keyword.length ? keyword : ''
-      }`
-    )
-    return res.data
-  }
-
   const onLoadMore = async () => {
     setLoading(true)
     handleScrollToBottom()
-    setList(images.data.concat([...new Array(pageSize)].map(() => ({ loading: true, title: '' } as Image))))
+    setList(
+      images.data.concat(
+        [...new Array(pageSize)].map(
+          () => ({ loading: true, title: "" } as Image)
+        )
+      )
+    )
     setCurrentPage(currentPage + 1)
-    const res = await getData(currentPage + 1, pageSize)
+    const res = await getImages(currentPage + 1, pageSize, tags)
     const data = images.data.concat(res.data)
     setImages({ ...res, data })
     setList(data)
@@ -89,10 +87,10 @@ const Home: FC = (): JSX.Element => {
     !initLoading && !loading && currentPage !== images.meta.totalPage ? (
       <div
         style={{
-          textAlign: 'center',
+          textAlign: "center",
           marginTop: 12,
           height: 32,
-          lineHeight: '32px',
+          lineHeight: "32px",
         }}
       >
         <Button onClick={onLoadMore}>Load more</Button>
@@ -103,25 +101,33 @@ const Home: FC = (): JSX.Element => {
     setTimeout(
       () =>
         endImageRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
+          behavior: "smooth",
+          block: "start",
         }),
       500
     )
   }
 
   return (
-    <Layout className={classes['container']}>
+    <Layout className={classes["container"]}>
       <div>
         <Title level={3}>List public images from Flickr</Title>
-        <Input placeholder="Search tags" onChange={(e) => setTags(e.target.value)} style={{ marginTop: '2rem' }} />
-        <section style={{ marginTop: '2rem' }}>
+        <Input
+          placeholder="Search tags"
+          onChange={(e) => setTags(e.target.value)}
+          style={{ marginTop: "2rem" }}
+        />
+        <section style={{ marginTop: "2rem" }}>
           {initLoading && <Spin size="large" />}
           <Row gutter={[16, 24]} justify="center">
             {list.map((item, index) => {
               return (
                 <Col
-                  ref={index === list.length - 1 ? (endImageRef as React.RefObject<HTMLDivElement>) : null}
+                  ref={
+                    index === list.length - 1
+                      ? (endImageRef as React.RefObject<HTMLDivElement>)
+                      : null
+                  }
                   key={index}
                   xs={20}
                   sm={16}
