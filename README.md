@@ -1,46 +1,38 @@
-# Getting Started with Create React App
+# Simple Coding Test for AIA Nodejs Fullstack Engineer (Frontend Repo)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### What will you do, in general?
 
-## Available Scripts
+1. Create a simple frontend that can read API from backend and display it to user.
+2. Create a simple backend that can read external API feed and serve it to frontend when called.
+3. Create unit testing for each of your app so it will survive changes.
+4. Deploy your application on a simple stack that's available to the public, like EC2 instance, your private server, or local kubernetes.
 
-In the project directory, you can run:
+### What we are expecting?
 
-### `yarn start`
+1. Good code understanding and expertise on using efficient method to solve problems.
+2. Good source control usage (using Git!)
+3. Practical use of tools available to you.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### What stack should you use?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. For backend, we expect you to use nodejs or expressjs that supports RESTful API.
+2. For frontend, we expect you to use ReactJS. Use whatever framework you are comfortable with, or don't use any at all.
+   It's all depend on your preferences, really!
+3. Use any type of unit testing you are comfortable with.
+4. Use Material-UI or Bootstrap to enhance the display of the app.
 
-### `yarn test`
+### Details, details.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Get the everchanging public image list from [Flickr public feed](https://api.flickr.com/services/feeds/photos_public.gne).
+   You can check the documentation from this [API Doc](http://www.flickr.com/services/feeds/).
+2. Use a public github repository to put your code. If you don't have one, just make one! Also, make use of good source versioning.
+   Commit often, and commit meaningfully.
+3. Bonus point if you can implement tag searching on the image. Just a simple search box with OK button will do!
+4. Another bonus point if you automatically load the image list one at a time, and implement paging.
+5. Deployment is optional. If you can't deploy your code, it's okay! Just make sure that you can demo it to us when we do the interview.
 
-### `yarn build`
+### So, what should you do?
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Use your creativity, and be unique. Do what you can do on this test! Don't worry if it's not perfect, we learn along the way!
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+-Fiorina Skyla Liberta-
