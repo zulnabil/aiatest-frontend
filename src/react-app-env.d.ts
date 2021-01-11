@@ -7,7 +7,7 @@ interface Image {
   media: {
     m: string
   }
-  published: string
+  date_taken: string
   tags: string
   loading: boolean
 }

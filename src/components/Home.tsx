@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react'
 import axios from 'axios'
-import { Layout, Typography, Row, Col, Image, Skeleton, Button, Spin } from 'antd'
+import { Layout, Typography, Row, Col, Input, Button, Spin } from 'antd'
 
+import useDebounce from 'hooks/useDebounce'
 import CardImage from './Card'
 import classes from './Home.module.css'
 
@@ -21,11 +22,13 @@ interface ResponseImages {
 const Home: FC = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number>(4)
-  const [tags, setTags] = useState<string[]>([])
+  const [tags, setTags] = useState<string>('')
   const [initLoading, setInitLoading] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
   const [images, setImages] = useState<ResponseImages>({} as ResponseImages)
   const [list, setList] = useState<Image[]>([])
+
+  const debouncedTags = useDebounce(tags, 500)
 
   useEffect(() => {
     getData(currentPage, pageSize)
@@ -40,10 +43,22 @@ const Home: FC = (): JSX.Element => {
       })
   }, [])
 
-  const getData = async (currentPage, pageSize) => {
+  useEffect(() => {
+    if (debouncedTags) {
+      setInitLoading(true)
+      setList([])
+      getData(currentPage, pageSize, debouncedTags).then((res) => {
+        setInitLoading(false)
+        setImages(res)
+        setList(res.data)
+      })
+    }
+  }, [debouncedTags])
+
+  const getData = async (currentPage, pageSize, keyword = tags) => {
     const res = await axios(
       `${process.env.REACT_APP_API_URL}/images?currentPage=${currentPage}&pageSize=${pageSize}&tags=${
-        tags.length ? tags : ''
+        keyword.length ? keyword : ''
       }`
     )
     return res.data
@@ -78,11 +93,12 @@ const Home: FC = (): JSX.Element => {
     <Layout className={classes['container']}>
       <div>
         <Title level={3}>List public images from Flickr</Title>
-        <section>
+        <Input placeholder="Search tags" onChange={(e) => setTags(e.target.value)} style={{ marginTop: '2rem' }} />
+        <section style={{ marginTop: '2rem' }}>
           {initLoading && <Spin size="large" />}
           <Row gutter={[16, 24]} justify="center">
-            {list.map((item) => (
-              <Col xs={20} sm={16} md={12} lg={8} xl={6}>
+            {list.map((item, index) => (
+              <Col key={index} xs={20} sm={16} md={12} lg={8} xl={6}>
                 <CardImage {...item} />
               </Col>
             ))}
