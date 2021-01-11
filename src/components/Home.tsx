@@ -45,9 +45,17 @@ const Home: FC = (): JSX.Element => {
 
   useEffect(() => {
     if (debouncedTags) {
+      setCurrentPage(1)
       setInitLoading(true)
       setList([])
       getData(currentPage, pageSize, debouncedTags).then((res) => {
+        setInitLoading(false)
+        setImages(res)
+        setList(res.data)
+      })
+    } else {
+      setInitLoading(true)
+      getData(currentPage, pageSize, tags).then((res) => {
         setInitLoading(false)
         setImages(res)
         setList(res.data)
@@ -76,7 +84,7 @@ const Home: FC = (): JSX.Element => {
   }
 
   const loadMore =
-    !initLoading && !loading ? (
+    !initLoading && !loading && currentPage !== images.meta.totalPage ? (
       <div
         style={{
           textAlign: 'center',
