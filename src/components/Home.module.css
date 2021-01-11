@@ -1,0 +1,11 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.body {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}

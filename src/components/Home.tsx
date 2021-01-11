@@ -1,13 +1,17 @@
 import React, { FC } from 'react'
-import { Typography } from 'antd'
+import { Layout, Typography } from 'antd'
+
+import classes from './Home.module.css'
 
 const { Title } = Typography
 
 const Home: FC = (): JSX.Element => {
   return (
-    <>
-      <Title level={3}>List public images from Flickr</Title>
-    </>
+    <Layout className={classes['container']}>
+      <div className={classes['body']}>
+        <Title level={3}>List public images from Flickr</Title>
+      </div>
+    </Layout>
   )
 }
 
