@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import axios from 'axios'
 import { Layout, Typography, Row, Col, Image, Skeleton, Button, Spin, Card } from 'antd'
 
+import { stringToDate } from 'functions/utility'
 import classes from './Home.module.css'
 
 const { Title } = Typography
@@ -102,37 +103,13 @@ const Home: FC = (): JSX.Element => {
               ) : (
                 <Col xs={20} sm={16} md={12} lg={8} xl={6}>
                   <Card hoverable cover={<Image alt="example" src={item.media?.m} />}>
-                    <Meta title={item.title} description={item.published} />
+                    <Meta title={item.title} description={stringToDate(item.published)} />
                   </Card>
                 </Col>
               )
             )}
           </Row>
-          {/* {list.map((item) => (
-            <Card hoverable style={{ width: 240 }} cover={<img alt="example" src={item.media?.m} />}>
-              <Meta title={item.title} description={item.published} />
-            </Card>
-          ))} */}
           {loadMore}
-          {/* <List
-            className="demo-loadmore-list"
-            loading={initLoading}
-            itemLayout="horizontal"
-            loadMore={loadMore}
-            dataSource={list}
-            renderItem={(item) => (
-              <List.Item actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}>
-                <Skeleton avatar title={false} loading={item.loading} active>
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.media?.m} />}
-                    title={<a href="https://ant.design">{item.title}</a>}
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                  />
-                  <div>content</div>
-                </Skeleton>
-              </List.Item>
-            )}
-          /> */}
         </section>
       </div>
     </Layout>
