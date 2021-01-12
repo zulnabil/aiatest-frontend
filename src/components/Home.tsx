@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from "react"
-import axios from "axios"
 import { Layout, Typography, Row, Col, Input, Button, Spin } from "antd"
 
 import { getImages } from "services/api"
